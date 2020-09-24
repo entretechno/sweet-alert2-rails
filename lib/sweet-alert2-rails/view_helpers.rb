@@ -30,15 +30,19 @@ module SweetAlert2Rails
       super value, options
     end
 
-    def button_tag(*args, &block)
-      html_options = args[block_given? ? 0 : 1] || {}
+    def button_tag(content_or_options = nil, options = nil, &block)
+      if content_or_options.is_a? Hash
+        html_options = content_or_options
+      else
+        html_options = options || {}
+      end
 
       if options_has_confirm?(html_options)
         html_options['data-sweet-alert-confirm'] = html_options.delete(:confirm) ||
                     html_options[:data].delete(:confirm)
       end
 
-      super *args, &block
+      super content_or_options, options, &block
     end
 
     protected
